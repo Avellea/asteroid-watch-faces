@@ -138,37 +138,29 @@ Item {
         }
     }
 
-    Canvas { 
+    Text { 
         id: batteryCanvas
-        anchors.fill: parent
-        renderStrategy: Canvas.Cooperative
-
-        property var value: (featureSlider.value * 100).toFixed(0)
-
-        onPaint: {
-            var ctx = getContext("2d")
-            prepareContext(ctx)
-
-            var px = "px "
-            var centerX = parent.width/2
-            var centerY = parent.height*0.382
-            var verticalOffset = -parent.height*0.003
-
-            
-
-            var text;
-            // text = value
-            text = batteryChargePercentage.percent + "%"
-            // text = "debug"
-
-            var fontSize = parent.height*0.072
-            var fontFamily = "ProductSans"
-
-            ctx.fillStyle = 'rgba(100%, 100%, 100%, 0.65)';
-
-            ctx.font = "0 " + fontSize + px + fontFamily;
-            ctx.fillText(text, centerX, centerY + verticalOffset);
+        
+        anchors {
+            centerIn: parent
+            verticalCenterOffset: -parent.height * 0.13
         }
+
+        renderType: Text.NativeRendering
+
+        font {
+            pixelSize: parent.height * 0.072
+            family: "ProductSans"
+        }
+
+        color: '#FFFFFF'
+        opacity: 0.65
+
+        // property var value: (featureSlider.value * 100).toFixed(0)
+        property var value: batteryChargePercentage.percent
+
+        text: value + "%"
+
     }
 
     Canvas {
@@ -221,8 +213,8 @@ Item {
         hourMinuteCanvas.hour = hour
         hourMinuteCanvas.minute = minute
         hourMinuteCanvas.requestPaint()
-        batteryCanvas.requestPaint()
-        // batteryIcon.requestPaint()
+        // batteryCanvas.requestPaint()
+        batteryIcon.requestPaint()
         dateCanvas.date = date
         dateCanvas.requestPaint()
         amPmCanvas.am = am
@@ -233,8 +225,8 @@ Item {
         target: localeManager
         function onChangesObserverChanged() {
             hourMinuteCanvas.requestPaint()
-            batteryCanvas.requestPaint()
-            // batteryIcon.requestPaint()
+            // batteryCanvas.requestPaint()
+            batteryIcon.requestPaint()
             dateCanvas.requestPaint()
             amPmCanvas.requestPaint()
         }
