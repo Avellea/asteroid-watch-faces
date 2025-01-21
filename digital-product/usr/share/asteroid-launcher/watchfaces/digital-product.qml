@@ -46,7 +46,7 @@ Item {
 
     MouseArea {
         anchors.fill: parent
-        onPressAndHold: batteryCanvas.requestPaint();
+        onPressAndHold: forceRepaint()
     }
 
     MceBatteryState {
@@ -66,6 +66,13 @@ Item {
         ctx.shadowOffsetX = parent.height*0.00625
         ctx.shadowOffsetY = parent.height*0.00625 //2 px on 320x320
         ctx.shadowBlur = parent.height*0.0156  //5 px on 320x320
+    }
+
+    function forceRepaint() {
+        hourMinuteCanvas.requestPaint()
+        batteryIcon.requestPaint()
+        dateCanvas.requestPaint()
+        amPmCanvas.requestPaint()   
     }
 
     Icon {
