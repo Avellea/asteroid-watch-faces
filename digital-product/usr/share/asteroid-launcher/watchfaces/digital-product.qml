@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2018 - Timo Könnecke <el-t-mo@arcor.de>
+ * Copyright (C) 2025 - Avellea Jenkins
+ *               2018 - Timo Könnecke <el-t-mo@arcor.de>
  *               2015 - Florent Revest <revestflo@gmail.com>
  *               2014 - Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
  * All rights reserved.
@@ -33,6 +34,12 @@
 * Based on Florents 002-alternative-digital stock watchface.
 * Bigger monotype font (GeneraleMono) and fixed am/pm display by slicing to two chars.
 * Calculated ctx.shadows with variable px size for better display in watchface-settings
+*/
+
+/* 
+* Further based on digital-alternative-mosen by eLtMosen <Timo Könnecke>
+* Uses Google-inspired font, (temporarily) removed am/pm display.
+* Added battery percentage and charge indicator.
 */
 
 import QtQuick 2.15
