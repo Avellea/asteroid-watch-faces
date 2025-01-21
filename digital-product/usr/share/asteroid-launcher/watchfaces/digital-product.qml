@@ -74,7 +74,7 @@ Item {
         visible: batteryChargeState.value === MceBatteryState.Charging
         anchors {
             centerIn: parent
-            horizontalCenterOffset: parent.width * 0.0001
+            // horizontalCenterOffset: parent.width * 0.0001
             verticalCenterOffset: -parent.height * 0.4
         }
         width: parent.width * 0.15
