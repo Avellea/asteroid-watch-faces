@@ -76,10 +76,10 @@ Item {
     }
 
     function forceRepaint() {
-        hourMinuteCanvas.requestPaint()
-        batteryIcon.requestPaint()
-        dateCanvas.requestPaint()
-        amPmCanvas.requestPaint()   
+        // hourMinuteCanvas.requestPaint()
+        // batteryIcon.requestPaint()
+        // dateCanvas.requestPaint()
+        // amPmCanvas.requestPaint()   
     }
 
     Icon {
@@ -96,31 +96,56 @@ Item {
         opacity: 0.65
     }
 
-    Canvas {
+    Text {
         id: hourMinuteCanvas
-        anchors.fill: parent
+        anchors {
+            centerIn: parent
+            // verticalCenterOffset: -parent.height * 0.001
+        }
+        // anchors.fill: parent
         antialiasing: true
         smooth: true
-        renderStrategy: Canvas.Cooperative
+        renderType: Text.NativeRendering
 
-        property var hour: 0
-        property var minute: 0
-
-        onPaint: {
-            var ctx = getContext("2d")
-            prepareContext(ctx)
-
-            var text;
-            // text = twoDigits(hour) + ":" + twoDigits(minute)
-            text = wallClock.time.toLocaleString(Qt.locale(), "HH") + ":" + wallClock.time.toLocaleString(Qt.locale(), "mm");
-            // text = batterChargePercentage.percent
-
-            ctx.font = "50 " +parent.height*0.25 + "px " + "ProductSans";
-            ctx.fillText(text,
-                        parent.width*0.5,
-                        parent.height*0.546);
+        font { 
+            pixelSize: 50 + (parent.height*0.15)
+            family: "ProductSans"
         }
+
+        color: '#FFFFFF'
+        // color: (displayAmbient ? "#424242" : "#FFFFFF")
+        // opacity: 1.00
+        opacity: (displayAmbient ? 0.35 : 1.00)
+
+        text: wallClock.time.toLocaleString(Qt.locale(), "HH") + ":" + wallClock.time.toLocaleString(Qt.locale(), "mm");
+
     }
+
+    // Canvas {
+    //     id: hourMinuteCanvas
+    //     anchors.fill: parent
+    //     antialiasing: true
+    //     smooth: true
+    //     renderStrategy: Canvas.Cooperative
+
+    //     property var hour: 0
+    //     property var minute: 0
+
+    //     onPaint: {
+    //         var ctx = getContext("2d")
+    //         prepareContext(ctx)
+
+    //         var text;
+    //         // text = twoDigits(hour) + ":" + twoDigits(minute)
+    //         text = wallClock.time.toLocaleString(Qt.locale(), "HH") + ":" + wallClock.time.toLocaleString(Qt.locale(), "mm");
+    //         // text = batterChargePercentage.percent
+
+    //         ctx.font = "50 " +parent.height*0.25 + "px " + "ProductSans";
+    //         ctx.fillText(text,
+    //                     parent.width*0.5,
+    //                     parent.height*0.546);
+    //     }
+    // }
 
     Canvas {
         id: amPmCanvas
@@ -128,6 +153,11 @@ Item {
         renderStrategy: Canvas.Cooperative
 
         property bool am: false
+
+        // font { 
+        //     pixelSize: parent.heigh * 0.072
+        //     family: "Product"
+        // }
 
         onPaint: {
             var ctx = getContext("2d")
@@ -157,7 +187,7 @@ Item {
         
         anchors {
             centerIn: parent
-            verticalCenterOffset: -parent.height * 0.13
+            verticalCenterOffset: -parent.height * 0.15
         }
 
         renderType: Text.NativeRendering
@@ -168,7 +198,8 @@ Item {
         }
 
         color: '#FFFFFF'
-        opacity: 0.65
+        opacity: (displayAmbient ? 0.35 : 0.65)
+        // opacity: 0.65
 
         // property var value: (featureSlider.value * 100).toFixed(0)
         property var value: batteryChargePercentage.percent
@@ -185,12 +216,13 @@ Item {
         renderStrategy: Canvas.Cooperative
 
         property var date: 0
+        opacity: (displayAmbient ? 0.35 : 0.65)
 
         onPaint: {
             var ctx = getContext("2d")
             prepareContext(ctx)
             // ctx.fillStyle = '#a8a8a8';
-            ctx.fillStyle = 'rgba(100%, 100%, 100%, 0.65)';
+            ctx.fillStyle = 'rgb(100%, 100%, 100%)';
 
             ctx.font = "0 " +parent.height*0.0725 + "px " + "ProductSans";
             ctx.fillText(wallClock.time.toLocaleString(Qt.locale(), "ddd, MMM dd"),
@@ -200,20 +232,20 @@ Item {
         }
     }
 
-    Connections {
-        target: wallClock
-        function onTimeChanged() {
-            var minute = wallClock.time.getMinutes()
-            var date = wallClock.time.getDate()
-            if(hourMinuteCanvas.minute != minute) {
-                hourMinuteCanvas.minute = minute
-                hourMinuteCanvas.requestPaint()
-            } if(dateCanvas.date != date) {
-                dateCanvas.date = date
-                dateCanvas.requestPaint()
-            }
-        }
-    }
+    // Connections {
+    //     target: wallClock
+    //     function onTimeChanged() {
+    //         var minute = wallClock.time.getMinutes()
+    //         var date = wallClock.time.getDate()
+    //         if(hourMinuteCanvas.minute != minute) {
+    //             hourMinuteCanvas.minute = minute
+    //             hourMinuteCanvas.requestPaint()
+    //         } if(dateCanvas.date != date) {
+    //             dateCanvas.date = date
+    //             dateCanvas.requestPaint()
+    //         }
+    //     }
+    // }
 
     Component.onCompleted: {
         var hour = wallClock.time.getHours()
@@ -224,9 +256,9 @@ Item {
             hour = hour % 12
             if (hour == 0) hour = 12
         }
-        hourMinuteCanvas.hour = hour
-        hourMinuteCanvas.minute = minute
-        hourMinuteCanvas.requestPaint()
+        // hourMinuteCanvas.hour = hour
+        // hourMinuteCanvas.minute = minute
+        // hourMinuteCanvas.requestPaint()
         // batteryCanvas.requestPaint()
         batteryIcon.requestPaint()
         dateCanvas.date = date
@@ -238,7 +270,7 @@ Item {
     Connections {
         target: localeManager
         function onChangesObserverChanged() {
-            hourMinuteCanvas.requestPaint()
+            // hourMinuteCanvas.requestPaint()
             // batteryCanvas.requestPaint()
             batteryIcon.requestPaint()
             dateCanvas.requestPaint()
