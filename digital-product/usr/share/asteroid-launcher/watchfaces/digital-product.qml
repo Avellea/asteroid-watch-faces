@@ -39,7 +39,6 @@
 /* 
 * Further based on digital-alternative-mosen by eLtMosen <Timo Könnecke>
 * Font: Poppins (OFL, https://fonts.google.com/specimen/Poppins/license)
-* (temporarily) removed am/pm display.
 * Added battery percentage and charge indicator.
 */
 
@@ -52,9 +51,9 @@ import Nemo.Mce 1.0
 
 Item {
 
-    MouseArea {
-        anchors.fill: parent
-    }
+    // MouseArea {
+    //     anchors.fill: parent
+    // }
 
     MceBatteryState {
         id: batteryChargeState
@@ -64,16 +63,6 @@ Item {
         id: batteryChargePercentage
     }
 
-    function prepareContext(ctx) {
-        ctx.reset()
-        ctx.fillStyle = "white"
-        ctx.textAlign = "center"
-        ctx.textBaseline = 'middle';
-        ctx.shadowColor = Qt.rgba(0, 0, 0, 0.80)
-        ctx.shadowOffsetX = parent.height*0.00625
-        ctx.shadowOffsetY = parent.height*0.00625 //2 px on 320x320
-        ctx.shadowBlur = parent.height*0.0156  //5 px on 320x320
-    }
 
     Icon {
         id: batteryIcon
@@ -109,8 +98,29 @@ Item {
         color: '#FFFFFF'
         opacity: (displayAmbient ? 0.35 : 1.00)
 
-        text: wallClock.time.toLocaleString(Qt.locale(), "HH") + ":" + wallClock.time.toLocaleString(Qt.locale(), "mm");
+        text: wallClock.time.toLocaleString(Qt.locale(), (use12H.value ? "hh:mm a" : "HH:mm")).slice(0,5)
+    }
 
+    Text {
+        id: ampmDisplay
+
+        visible: use12H.value
+
+        anchors {
+            centerIn: parent
+            verticalCenterOffset: -parent.height * 0.15
+            horizontalCenterOffset: parent.width * 0.255
+        }
+
+        font { 
+            pixelSize: 0 + (parent.height*0.0725)
+            family: "Poppins"
+        }
+
+        color: '#FFFFFF'
+        opacity: (displayAmbient ? 0.35 : 0.75)
+
+        text: wallClock.time.toLocaleString(Qt.locale(), "ap")
     }
 
     Text { 
@@ -129,7 +139,7 @@ Item {
         }
 
         color: '#FFFFFF'
-        opacity: (displayAmbient ? 0.35 : 0.65)
+        opacity: (displayAmbient ? 0.35 : 0.75)
 
         // property var value: (featureSlider.value * 100).toFixed(0)
         property var value: batteryChargePercentage.percent
@@ -143,7 +153,7 @@ Item {
         
         anchors {
             centerIn: parent
-            verticalCenterOffset: parent.height * 0.17
+            verticalCenterOffset: parent.height * 0.15
         }
 
         antialiasing: true
@@ -156,20 +166,9 @@ Item {
         }
 
         color: '#FFFFFF'
-        opacity: (displayAmbient ? 0.35 : 0.65)
+        opacity: (displayAmbient ? 0.35 : 0.75)
 
         text: wallClock.time.toLocaleString(Qt.locale(), "ddd, MMM d")
 
-    }
-
-    Connections {
-        target: localeManager
-        function onChangesObserverChanged() {
-            // hourMinuteCanvas.requestPaint()
-            // batteryCanvas.requestPaint()
-            batteryIcon.requestPaint()
-            // dateCanvas.requestPaint()
-            amPmCanvas.requestPaint()
-        }
     }
 }
