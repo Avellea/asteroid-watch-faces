@@ -38,7 +38,8 @@
 
 /* 
 * Further based on digital-alternative-mosen by eLtMosen <Timo Könnecke>
-* Uses Google-inspired font, (temporarily) removed am/pm display.
+* Font: Poppins (OFL, https://fonts.google.com/specimen/Poppins/license)
+* (temporarily) removed am/pm display.
 * Added battery percentage and charge indicator.
 */
 
@@ -53,7 +54,6 @@ Item {
 
     MouseArea {
         anchors.fill: parent
-        // onPressAndHold: forceRepaint()
     }
 
     MceBatteryState {
@@ -74,13 +74,6 @@ Item {
         ctx.shadowOffsetY = parent.height*0.00625 //2 px on 320x320
         ctx.shadowBlur = parent.height*0.0156  //5 px on 320x320
     }
-
-    // function forceRepaint() {
-    //     hourMinuteCanvas.requestPaint()
-    //     batteryIcon.requestPaint()
-    //     dateCanvas.requestPaint()
-    //     amPmCanvas.requestPaint()   
-    // }
 
     Icon {
         id: batteryIcon
@@ -109,8 +102,8 @@ Item {
         renderType: Text.NativeRendering
 
         font { 
-            pixelSize: 50 + (parent.height*0.10)
-            family: "ProductSans"
+            pixelSize: 50 + (parent.height*0.075)
+            family: "Poppins"
         }
 
         color: '#FFFFFF'
@@ -119,41 +112,6 @@ Item {
         text: wallClock.time.toLocaleString(Qt.locale(), "HH") + ":" + wallClock.time.toLocaleString(Qt.locale(), "mm");
 
     }
-
-    // Canvas {
-    //     id: amPmCanvas
-    //     anchors.fill: parent
-    //     renderStrategy: Canvas.Cooperative
-
-    //     property bool am: false
-
-    //     // font { 
-    //     //     pixelSize: parent.heigh * 0.072
-    //     //     family: "Product"
-    //     // }
-
-    //     onPaint: {
-    //         var ctx = getContext("2d")
-    //         prepareContext(ctx)
-
-    //         var px = "px "
-    //         var centerX =parent.width/2
-    //         var centerY =parent.height*0.382
-    //         var verticalOffset = -parent.height*0.003
-
-    //         var text;
-    //         text = wallClock.time.toLocaleString(Qt.locale(), "ap").toUpperCase()
-    //         // text = batteryChargePercentage.percent
-
-    //         var fontSize =parent.height*0.072
-    //         var fontFamily = "ProductSans"
-
-    //         ctx.font = "0 " + fontSize + px + fontFamily;
-    //         if(use12H.value) ctx.fillText(text,
-    //                                       centerX,
-    //                                       centerY+verticalOffset);
-    //     }
-    // }
 
     Text { 
         id: batteryCanvas
@@ -167,7 +125,7 @@ Item {
 
         font {
             pixelSize: parent.height * 0.072
-            family: "ProductSans"
+            family: "Poppins"
         }
 
         color: '#FFFFFF'
@@ -194,7 +152,7 @@ Item {
 
         font { 
             pixelSize: 0 + (parent.height*0.0725)
-            family: "ProductSans"
+            family: "Poppins"
         }
 
         color: '#FFFFFF'
@@ -203,26 +161,6 @@ Item {
         text: wallClock.time.toLocaleString(Qt.locale(), "ddd, MMM d")
 
     }
-
-    // Component.onCompleted: {
-    //     var hour = wallClock.time.getHours()
-    //     var minute = wallClock.time.getMinutes()
-    //     var date = wallClock.time.getDate()
-    //     var am = hour < 12
-    //     if(use12H.value) {
-    //         hour = hour % 12
-    //         if (hour == 0) hour = 12
-    //     }
-    //     // hourMinuteCanvas.hour = hour
-    //     // hourMinuteCanvas.minute = minute
-    //     // hourMinuteCanvas.requestPaint()
-    //     // batteryCanvas.requestPaint()
-    //     batteryIcon.requestPaint()
-    //     dateCanvas.date = date
-    //     dateCanvas.requestPaint()
-    //     amPmCanvas.am = am
-    //     amPmCanvas.requestPaint()
-    // }
 
     Connections {
         target: localeManager
